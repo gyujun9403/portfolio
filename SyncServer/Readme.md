@@ -1,10 +1,9 @@
-# 동기화 포폴
+3# 동기화 포폴
 
 # 1. 토이 프로젝트 개요
 
 ## 1.1 프로젝트 개요
-
-![intro.gif](.\images\intro.gif)
+<img src=".\images\intro.gif">
 
 서버 및 클라의 동기화 기법이 동기화의 필요성에 대해 그래픽 및 수치적으로 확인하고 분석하고자 수행하였다. 해당 토이 프로젝트에서 중심적으로 파악할 내용은 다음과 같다.
 
@@ -49,10 +48,10 @@
 
 
 # 3. 아무런 동기화 기법이 없을 때
-
-![NotDeadReckoning.gif](images\NotDeadReckoning.gif)
-
-![plot_NRND.png](images\plot_NRND.png)
+<img src=".\images\NotDeadReckoning.gif">
+<!--![NotDeadReckoning.gif](.\images\NotDeadReckoning.gif)-->
+<img src=".\images\plot_NRND.png">
+<!--![plot_NRND.png](images\plot_NRND.png)-->
 
 그래프에서 This는 컨트롤 캐릭터(자주색), Server는 서버측 데이터(녹색), Other는 다른 클라 시점(파란색)이다.
 
@@ -65,14 +64,14 @@
 
 우선 데드레커닝을 통해 동작을 매끄럽게 하고, 이후 조작 지연 동기화를 적용하여 성능의 차이를 비교해 본다.
  - 데드레커닝 : 보간법과 달리 지연시간을 증가시키지 않으므로 적용. 다만 오차에 따른 튐 현상은 주의할 필요가 있을 것.
- - 입력 지연 적용 기법 : 이론상 서버 및 클라들을 시간 차이 없이 동기화할 수 있는 동기화 기법이라 판단하여 적용. 약간의 동작 딜레이가 문제가 되어 Frame Rate가 낮아질 수 있으나, 데드레커닝과 조합 시 Frame Rate도 확보할 수 있을 것이라 판단 하였다.
+ - 조작 지연 적용 기법 : 이론상 서버 및 클라들을 시간 차이 없이 동기화할 수 있는 동기화 기법이라 판단하여 적용. 약간의 동작 딜레이가 문제가 되어 Frame Rate가 낮아질 수 있으나, 데드레커닝과 조합 시 Frame Rate도 확보할 수 있을 것이라 판단 하였다.
 </br>\([참고문서](https://m.blog.naver.com/PostView.naver?blogId=linegamedev&logNo=221061964789&targetKeyword=&targetRecommendationCode=1)의 Fixed Time Bucket Synchronization라고 표현된 동기화를 변형하여 적용 \)
 
 ## 4.1 데드레커닝 적용시
-
-![DeadReckoning.gif](images\DeadReckoning.gif)
-
-![Untitled](images\plot_RND.png)
+<img src=".\images\DeadReckoning.gif">
+<!--![DeadReckoning.gif](images\DeadReckoning.gif)-->
+<img src=".\images\plot_RND.png">
+<!--![Untitled](images\plot_RND.png)-->
 
 GIF파일만 봐도 이전보다 더 매끄럽게 움직이며, 로그 데이터 형태도 원본과 근사하게 찍힌다.
 
@@ -85,37 +84,37 @@ GIF파일만 봐도 이전보다 더 매끄럽게 움직이며, 로그 데이터
 ## 4.2 조작 지연 동기화 적용
 
 ### 4.2.1 조작 지연 동기화 없을시
-
-![Untitled](images\timePlot1.png)
+<img src=".\images\timePlot1.png">
+<!--![Untitled](images\timePlot1.png)-->
 
 각 조작 및 통신 데이터들은 바로 적용되어 위와 같이 동작한다. 이 경우 송신측과 수신측과 딜레이는 60msec까지 넘어가, 게임 플레이에 악영향을 미칠것이다.
 
 ### 4.2.2 이론적인 조작 지연 동기화
-
-![Untitled](images\timePlot2.png)
+<img src=".\images\timePlot2.png">
+<!--![Untitled](images\timePlot2.png)-->
 
  조작 지연 동기화의 주요 골자는 수신 측이 데이터를 받을 시간을 예상해서, 그 시간까지 송신 측 및 서버가 대기 후 그 데이터를 적용시킨다. 이를 통해 송수신 간 통신 딜레이에 의한 정보 차이를 \(이론상\)없앨 수 있다. </br>
  하지만, 다만, 지연시간을 그대로 적용하는 경우 송신 측 조작감에 큰 영향을 미칠 수 있으므로 송수신 딜레이 값을 곧이 곧대로 적용시켜선 안된다고 판단했다.
 
 ### 4.2.3 조작감을 고려한 조작 지연 동기화
-
-![Untitled](images\timePlot3.png)
+<img src=".\images\timePlot3.png">
+<!--![Untitled](images\timePlot3.png)-->
 
   조작감을 고려하여 송신 측 조작 대기시간에 상한 값을 정한다. 평균적으로 ping 값이 50msec 이하일때 쾌적한 게임 환경이 된다고 한다. 거기다 사람에 따라 더 민감할 수 있으므로 이보다 더 작은 값인 30msec을 최대 지연 시간으로 정했다. 이 값은 게임의 특성에 따라 더 줄이거나 늘릴 수 있을 것이다.
 
 - 송신 측 지연 : `min(송신지연 + 수신지연, 30msec)`
 - 서버 측 지연 : `max((송신최종지연 - 송신지연 + 수신시연) / 2, 0msec).` 
 - 수신 측은 받는 즉시 바로 적용.
-
-![ReckoningNDelay.gif](images\ReckoningNDelay.gif)
-
-![plot_RD.png](images\plot_RD.png)
+<img src=".\images\ReckoningNDelay.gif">
+<!--![ReckoningNDelay.gif](images\ReckoningNDelay.gif)-->
+<img src=".\images\plot_RD.png">
+<!--![plot_RD.png](images\plot_RD.png)->
 
 입력 쪽 딜레이가 발생하였지만, 차이가 눈에 띄게 줄은 것을 확인할 수 있다.
 
 ## 4.3 동기화 적용 후 실제 조작.
-
-![FreeMove.gif](images\FreeMove.gif)
+<img src=".\images\FreeMove.gif">
+<!--![FreeMove.gif](images\FreeMove.gif)-->
 
 30msec 정도의 딜레이를 적용했지만 키보드 조작 입력(좌하단)에 대한 지연은 체감상 크지 않았다. 만약 지연시간 동안 준비 동작 동작을 출력하여 지연을 감춘다면 유저가 체감하는 지연시간은 0에 가까울 것이다.
 
