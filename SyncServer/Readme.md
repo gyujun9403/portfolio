@@ -102,10 +102,8 @@ GIF파일만 봐도 이전보다 더 매끄럽게 움직이며, 로그 데이터
 <img src=".\images\ReckoningNDelay.gif">
 <!--![ReckoningNDelay.gif](images\ReckoningNDelay.gif)-->
 <img src=".\images\plot_RD.png">
-<!--![plot_RD.png](images\plot_RD.png)->
-
+<!--![plot_RD.png](images\plot_RD.png)-->
 입력 쪽 딜레이가 발생하였지만, 차이가 눈에 띄게 줄은 것을 확인할 수 있다.
-
 
 ### 4.3 동기화 적용 후 실제 조작.
 <img src=".\images\FreeMove.gif">
