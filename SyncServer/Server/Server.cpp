@@ -43,7 +43,7 @@ bool Server::RunServer()
     }
     std::cout << "Server port are binded." << std::endl;
 
-    rt = listen(_serverSockFd, 4);
+    rt = listen(_serverSockFd, LISTEN_QUEUED_REQ);
     if (rt < 0)
     {
         std::cerr << "listen fail:" << rt << ',' << errno << std::endl;

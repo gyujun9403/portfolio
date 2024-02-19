@@ -4,6 +4,7 @@
 #include "../PacketProcesser/PacketProcesser.hpp"
 
 #define THREAD_NUM 4
+#define LISTEN_QUEUED_REQ 4
 
 class Server
 {

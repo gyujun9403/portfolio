@@ -42,10 +42,10 @@ public:
     
 private:
     const std::string FILE_NAME_PREFIX = "ServerLog";
-    char _timeStrBuffer[24];
 
     std::atomic<bool> _isRunning;
     std::atomic<bool> _isLogging;
+    char _timeStrBuffer[24];
     std::deque<UserStatus> _reservedStatus;
     
     std::mutex _inputStatusMutex;
