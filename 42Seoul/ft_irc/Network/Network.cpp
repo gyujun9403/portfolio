@@ -8,6 +8,8 @@
 #include "../User/UserManager.hpp"
 #include "../Channel/ChannelManager.hpp"
 #include <cerrno>
+#include <cstring>
+#include <cstdio>
 
 using namespace std;
 
@@ -66,8 +68,8 @@ bool Network::init()
 		this->logger.setServerDown(true);
 		return false;
 	}
-	if (fcntl(this->fdServer, F_SETFL, O_NONBLOCK) < 0 | fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK) < 0 |
-		fcntl(STDOUT_FILENO, F_SETFL, O_NONBLOCK) < 0 | fcntl(STDERR_FILENO, F_SETFL, O_NONBLOCK) < 0)
+	if (fcntl(this->fdServer, F_SETFL, O_NONBLOCK) < 0 || fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK) < 0 ||
+		fcntl(STDOUT_FILENO, F_SETFL, O_NONBLOCK) < 0 || fcntl(STDERR_FILENO, F_SETFL, O_NONBLOCK) < 0)
 	{
 		this->logger.errorLogging(string("\033[31m[fcntl]\033[0m") + strerror(errno));
 		this->logger.setServerDown(true);
